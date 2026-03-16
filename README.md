@@ -4,7 +4,7 @@
 
 An AI assistant that answers natural-language questions about corporate policies, grounded entirely in retrieved source documents. Designed around the principle that enterprise AI must prioritize trust and evidence over fluency — every answer cites its source, every claim is traceable, and the system refuses rather than hallucinate.
 
-![Policy Assistant Demo](assets/demo.gif)
+![Policy Assistant Demo](assets/Demo.gif)
 
 ---
 
