@@ -449,7 +449,7 @@ if user_input:
             seen.add(sid)
 
     context = get_context_for_llm(
-        user_input, vs, pds, k=8, use_parent_content=True,
+        user_input, vs, pds, k=8, use_parent_content=True, max_parents=3,
     )
     if not context:
         context = "(No relevant context found)"
