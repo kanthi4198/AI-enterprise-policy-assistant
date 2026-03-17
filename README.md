@@ -223,3 +223,10 @@ python src/run_generator_eval.py
 ├── requirements.txt
 └── .env.example
 ```
+
+---
+
+## Future Improvements
+
+- **Query rewriting** — Add a query reformulation step before retrieval to handle vague or poorly formed user questions, improving recall without changing the underlying index.
+- **Production deployment** — Containerize the application (Docker), add health checks, logging, and authentication, and set up CI/CD for repeatable deployments beyond the current local-only setup.
