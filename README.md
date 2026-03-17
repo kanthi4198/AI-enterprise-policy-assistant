@@ -20,6 +20,8 @@ Most RAG demos stop at "plug docs into a vector store and call an LLM." This pro
 
 - **Refusal over hallucination** — The system says "I don't know" rather than guessing. Conflicting policies are flagged, not silently resolved.
 
+- **Embedding models chosen by benchmark** — Selected IBM Granite 278M and Google Gemma 300M after evaluating candidates on MTEB retrieval benchmarks, balancing parameter efficiency against semantic quality for policy-length text.
+
 - **Evaluation is not optional** — A 16-criterion weighted rubric with automated LLM-as-Judge scoring, not just "does it look right?"
 
 ---
@@ -156,6 +158,8 @@ OLMo2 7B was selected for the production UI based on highest weighted rubric sco
 
 - Python 3.10+
 - [Ollama](https://ollama.com/) with at least one model pulled (e.g., `ollama pull olmo2:7b`)
+- GPU with 6GB+ VRAM (tested on 6GB); CPU-only works but will be slow
+- 16GB+ system RAM
 
 ### Setup
 
