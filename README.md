@@ -1,4 +1,4 @@
-# Enterprise Policy Assistant
+# AI Enterprise Policy Assistant
 
 A local-first RAG system that turns dense corporate policies into traceable, cited answers — built end-to-end from document ingestion to automated evaluation.
 
