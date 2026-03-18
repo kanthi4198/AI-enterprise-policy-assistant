@@ -104,7 +104,7 @@ OLMo2 7B was selected for the production UI based on highest weighted rubric sco
 ### Prerequisites
 
 - Python 3.10+
-- [Ollama](https://ollama.com/) with at least one model pulled (e.g., `ollama pull olmo2:7b`)
+- [Ollama](https://ollama.com/) installed and running
 - GPU with 6GB+ VRAM (tested on 6GB); CPU-only works but will be slow
 - 16GB+ system RAM
 
@@ -113,13 +113,27 @@ OLMo2 7B was selected for the production UI based on highest weighted rubric sco
 ```bash
 git clone <repo-url>
 cd "AI process-policy assistant"
+
+# Create and activate a virtual environment
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # macOS / Linux
+
+# Install dependencies (defaults to CUDA 12.8 — see note below)
 pip install -r requirements.txt
 
 cp .env.example .env
 
+# Pull the LLM used by the app
+ollama pull olmo2:7b
+
+# Build the vector store (first run downloads the embedding model ~1 GB)
 python src/ingest.py
+
 streamlit run src/app.py
 ```
+
+> **CPU-only or different CUDA version?** `requirements.txt` includes `--extra-index-url` for CUDA 12.8. If you're on a different CUDA version, swap the URL to match your toolkit (e.g. `cu121` for CUDA 12.1). For CPU-only, remove the `--extra-index-url` line entirely and install the default PyTorch wheels.
 
 ### Run Evaluations
 
