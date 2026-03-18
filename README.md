@@ -10,81 +10,31 @@ A local-first RAG system that turns dense corporate policies into traceable, cit
 
 Most RAG demos stop at "plug docs into a vector store and call an LLM." This project treats retrieval, safety, and evaluation as important components in the system. I built it to demonstrate how I approach production AI: explicit trade-offs, measurable quality, and trust over fluency.
 
-- **System over model** — The LLM is a replaceable component in an ingestion → retrieval → generation → evaluation pipeline. Retrieval quality, chunking strategy, and evaluation rigor matter as much as model selection.
+- **System over model**: The LLM is a replaceable component in an ingestion → retrieval → generation → evaluation pipeline. Retrieval quality, chunking strategy, and evaluation rigor matter as much as model selection.
 
-- **Parent–child chunking** — Small child chunks (1,500 chars) for precise semantic search, larger parent chunks (3,500 chars) for coherent generation context. This avoids the common RAG failure where fragments are too short to be useful or too long to be precise.
+- **Parent–child chunking**: Small child chunks (1,500 chars) for precise semantic search, larger parent chunks (3,500 chars) for coherent generation context. This avoids the common RAG failure where fragments are too short to be useful or too long to be precise.
 
-- **Retrieval chosen by experiment** — Implemented 5 FAISS-based retrieval strategies (Flat, HNSW, IVF, LSH, Hybrid) and benchmarked them on Hit@k, MRR, Precision@k, and Recall@k. The pipeline auto-selects the best-performing algorithm instead of locking one in up front.
+- **Retrieval chosen by experiment**: Implemented 5 FAISS-based retrieval strategies (Flat, HNSW, IVF, LSH, Hybrid) and benchmarked them on Hit@k, MRR, Precision@k, and Recall@k. The pipeline auto-selects the best-performing algorithm instead of locking one in up front.
 
-- **Safety as a hard constraint** — Models that don't score the maximum on dangerous assistance and security & confidentiality are excluded from consideration, regardless of overall score. Among safe candidates, the weighted rubric picks the best performer.
+- **Safety as a hard constraint**: Models that don't score the maximum on dangerous assistance and security & confidentiality are excluded from consideration, regardless of overall score. Among safe candidates, the weighted rubric picks the best performer.
 
-- **Refusal over hallucination** — The system says "I don't know" rather than guessing. Conflicting policies are flagged, not silently resolved.
+- **Refusal over hallucination**: The system says "I don't know" rather than guessing. Conflicting policies are flagged, not silently resolved.
 
-- **Embedding models chosen by benchmark** — Selected IBM Granite 278M and Google Gemma 300M after evaluating candidates on MTEB retrieval benchmarks, balancing parameter efficiency against semantic quality for policy-length text.
+- **Embedding models chosen by benchmark**: Selected IBM Granite 278M and Google Gemma 300M after evaluating candidates on MTEB retrieval benchmarks, balancing parameter efficiency against semantic quality for policy-length text.
 
-- **Evaluation is not optional** — A 16-criterion weighted rubric with automated LLM-as-Judge scoring, not just "does it look right?"
+- **Evaluation is not optional**: A 16-criterion weighted rubric with automated LLM-as-Judge scoring, not just "does it look right?"
 
 ---
 
 ## Architecture
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                         INGESTION                                │
-│                                                                  │
-│  23 Policy PDFs ──► PDF Loader ──► Parent-Child Chunker          │
-│                                        │                         │
-│                          ┌─────────────┼─────────────┐           │
-│                          ▼                           ▼           │
-│                   Child Chunks              Parent Docstore       │
-│                   (1500 char)                (3500 char)          │
-│                          │                                       │
-│                          ▼                                       │
-│              HuggingFace Embeddings                              │
-│           (granite-embedding-278m)                                │
-│                          │                                       │
-│                          ▼                                       │
-│                    FAISS Index                                    │
-└──────────────────────────────────────────────────────────────────┘
+<img width="1335" height="751" alt="image" src="https://github.com/user-attachments/assets/e0be45b4-61f1-470d-b4ea-5f7a88c3b277" />
 
-┌──────────────────────────────────────────────────────────────────┐
-│                       QUERY PIPELINE                             │
-│                                                                  │
-│  User Question ──► Embed Query ──► FAISS Similarity Search       │
-│                                          │                       │
-│                                          ▼                       │
-│                                  Top-k Child Chunks              │
-│                                          │                       │
-│                                          ▼                       │
-│                                  Parent Expansion                │
-│                                (retrieve full context)           │
-│                                          │                       │
-│                                          ▼                       │
-│                          ┌───────────────────────────┐           │
-│                          │   Generator LLM (Ollama)  │           │
-│                          │   + System Prompt          │           │
-│                          │   + Retrieved Context      │           │
-│                          └───────────────────────────┘           │
-│                                          │                       │
-│                                          ▼                       │
-│                             Cited, Grounded Answer               │
-└──────────────────────────────────────────────────────────────────┘
+<img width="1336" height="753" alt="image" src="https://github.com/user-attachments/assets/34358cf1-e187-44ba-b4e0-d2d16196685d" />
 
-┌──────────────────────────────────────────────────────────────────┐
-│                     EVALUATION PIPELINE                          │
-│                                                                  │
-│  Eval Question Set ──► RAG Pipeline ──► Response + Sources       │
-│        (67+ items)                            │                  │
-│                                               ▼                  │
-│                               ┌──────────────────────────┐       │
-│                               │   LLM-as-Judge           │       │
-│                               │   (16-criterion rubric)  │       │
-│                               │   Weighted scoring       │       │
-│                               └──────────────────────────┘       │
-│                                               │                  │
-│                                               ▼                  │
-│                              Per-model comparison report         │
-└──────────────────────────────────────────────────────────────────┘
+<img width="1336" height="750" alt="image" src="https://github.com/user-attachments/assets/08f60fcb-5cfa-4c59-8c2b-7b8d5107cc1a" />
+
 ```
 
 ---
