@@ -28,14 +28,11 @@ Most RAG demos stop at "plug docs into a vector store and call an LLM." This pro
 
 ## Architecture
 
-```
 <img width="1335" height="751" alt="image" src="https://github.com/user-attachments/assets/e0be45b4-61f1-470d-b4ea-5f7a88c3b277" />
 
 <img width="1336" height="753" alt="image" src="https://github.com/user-attachments/assets/34358cf1-e187-44ba-b4e0-d2d16196685d" />
 
 <img width="1336" height="750" alt="image" src="https://github.com/user-attachments/assets/08f60fcb-5cfa-4c59-8c2b-7b8d5107cc1a" />
-
-```
 
 ---
 
