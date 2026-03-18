@@ -28,11 +28,14 @@ Most RAG demos stop at "plug docs into a vector store and call an LLM." This pro
 
 ## Architecture
 
-<img width="1335" height="751" alt="image" src="https://github.com/user-attachments/assets/e0be45b4-61f1-470d-b4ea-5f7a88c3b277" />
+**Ingestion Pipeline**
+<img width="1335" height="751" alt="Ingestion pipeline: PDFs to parent-child chunks to FAISS index" src="https://github.com/user-attachments/assets/e0be45b4-61f1-470d-b4ea-5f7a88c3b277" />
 
-<img width="1336" height="753" alt="image" src="https://github.com/user-attachments/assets/34358cf1-e187-44ba-b4e0-d2d16196685d" />
+**Query Pipeline**
+<img width="1336" height="753" alt="Query pipeline: embed query, FAISS search, parent expansion, LLM generation" src="https://github.com/user-attachments/assets/34358cf1-e187-44ba-b4e0-d2d16196685d" />
 
-<img width="1336" height="750" alt="image" src="https://github.com/user-attachments/assets/08f60fcb-5cfa-4c59-8c2b-7b8d5107cc1a" />
+**Evaluation Pipeline**
+<img width="1336" height="750" alt="Evaluation pipeline: eval questions through RAG pipeline scored by LLM-as-Judge" src="https://github.com/user-attachments/assets/08f60fcb-5cfa-4c59-8c2b-7b8d5107cc1a" />
 
 ---
 
@@ -93,7 +96,9 @@ Four local models evaluated on the full rubric via automated LLM-as-Judge:
 | **OLMo2 7B** | **4.83** | 1.84 / 2 | 2.0 / 2 | 1.67 / 2 |
 | Mistral 7B | 4.53 | 1.70 / 2 | 1.73 / 2 | 1.50 / 2 |
 | Gemma3 4B | 3.90 | 1.50 / 2 | 1.71 / 2 | 1.33 / 2 |
-| Phi 3.5 Mini | 0.00 | — | — | — |
+| Phi 3.5 Mini | 0.00* | — | — | — |
+
+\* Phi 3.5 Mini produced mostly incoherent or off-topic outputs on this task, so the LLM judge could not score it on any rubric criterion.
 
 OLMo2 7B was selected for the production UI based on highest weighted rubric score, with strong performance on correctness, safety, and security.
 
@@ -111,8 +116,8 @@ OLMo2 7B was selected for the production UI based on highest weighted rubric sco
 ### Setup
 
 ```bash
-git clone <repo-url>
-cd "AI process-policy assistant"
+git clone https://github.com/kanthi4198/AI-process-policy-assistant.git
+cd AI-process-policy-assistant
 
 # Create and activate a virtual environment
 python -m venv .venv
