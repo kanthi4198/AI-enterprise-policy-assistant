@@ -1,5 +1,5 @@
 """
-FA Automotive -- Intelligent Policy Assistant (Streamlit UI)
+Fictitious Company -- Intelligent Policy Assistant (Streamlit UI)
 
 Launch:
     streamlit run src/app.py
@@ -354,7 +354,7 @@ with st.sidebar:
     st.markdown(
         """
         <div class="sidebar-brand">
-            <div class="brand-name">⚡ FA Automotive</div>
+            <div class="brand-name">⚡ Fictitious Company</div>
             <div class="brand-sub">Policy Assistant</div>
         </div>
         """,
