@@ -2,7 +2,7 @@
 
 A local-first RAG system that turns dense corporate policies into traceable, cited answers — built end-to-end from document ingestion to automated evaluation.
 
-![Policy Assistant Demo](assets/AI policy assistant demo for GitHub_LinkedIn.gif)
+![Policy Assistant Demo](assets/AI%20policy%20assistant%20demo%20for%20GitHub_LinkedIn.gif)
 
 ---
 
