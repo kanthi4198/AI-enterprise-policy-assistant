@@ -102,6 +102,24 @@ Four local models evaluated on the full rubric via automated LLM-as-Judge:
 
 OLMo2 7B was selected for the production UI based on highest weighted rubric score, with strong performance on correctness, safety, and security.
 
+### Embedding Model Evaluation
+
+Three embedding models benchmarked on Hit@1 and Hit@K over 28 eval questions. intfloat/multilingual-e5-large-instruct led on Hit@K; IBM Granite 278M offered the best Hit@1 and was selected for its balance of accuracy and efficiency.
+
+![Embedding Model Evaluation](assets/embedding_model_eval.png)
+
+### Chunking Strategy Evaluation
+
+24 parent/child chunk-size combinations swept with IBM Granite 278M embeddings. The top four configs all share a 1,500-char child size and converge at 96.4% Hit@1 / 96.4% Hit@K — the 3,500 / 1,500 setting was chosen for its lower chunk count and fast query time.
+
+![Chunking Evaluation](assets/chunking_eval.png)
+
+### Retrieval Algorithm Evaluation
+
+Five FAISS-based retrieval strategies compared on Hit@1, Hit@K, MRR, Precision@5, and Recall@5. Flat, HNSW, and IVF all reached 96.4% Hit@1; Flat was selected for its highest MRR (0.964) and simplest configuration.
+
+![Retrieval Algorithm Evaluation](assets/retrieval_algorithm_eval.png)
+
 ---
 
 ## Quick Start
